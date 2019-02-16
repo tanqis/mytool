@@ -1,100 +1,215 @@
 <template>
   <div class="statisticalChart">
-    <div ref="line"></div>
-    <div ref="pie"></div>
-    <div ref="map"></div>
+    <el-alert style="margin-top: 20px;"
+              title="当前数据每日更新一次；每日数据有0-$20波动精度偏差，不便之处敬请谅解；撤资请提前一个星期联系作者本人"
+              type="info"
+              :closable="false"
+              show-icon>
+    </el-alert>
+    <div class="view"
+         ref="totalTrend"></div>
+    <div class="view"
+         ref="investorProfit"></div>
+    <div class="view"
+         ref="userNumbel"></div>
+    <div class="view"
+         ref="historyTrend"></div>
   </div>
 </template>
 <script>
 var echarts = require("echarts/lib/echarts");
-// require("echarts/lib/chart/bar");
+require("echarts/lib/chart/bar");
 require("echarts/lib/chart/line");
 require("echarts/lib/chart/pie");
-// require("echarts/lib/chart/map");
 // 引入提示框和标题组件
 require("echarts/lib/component/tooltip");
 require("echarts/lib/component/title");
+require("echarts/lib/component/legend");
 // require("echarts/lib/component/dataRange");
 export default {
   data() {
     return {
+      financeByUserData: [],
       financeData: []
     };
   },
   created() {
-    this.getFinanceData();
+    const _this = this;
+    this.getFinanceByUserData()
+      .then(res => {
+        _this.financeByUserData = res;
+        _this.pushTotalTrend();
+        _this.pushUserNumbel();
+        _this.pushInvestorProfit();
+        _this.pushHistoryTrend();
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   mounted() {
     //挂载结束
-    const _this = this;
-    _this.setOption();
-    _this.setOption2();
-    _this.setOption3();
   },
   methods: {
     getFinanceData() {
-      this.$axios("./static/fanance.json").then(msg => {
+      this.$axios("./static/finance.json").then(msg => {
         this.financeData = msg.data;
       });
     },
-    setOption() {
-      var dom = this.$refs.line;
-      console.log("aa", dom, document.getElementById("line"));
-      let myChart = echarts.init(dom);
+    getFinanceByUserData() {
+      return new Promise((resolve, reject) => {
+        this.$axios("./static/financeByUser.json")
+          .then(res => {
+            resolve(res.data);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      });
+    },
+    pushTotalTrend() {
+      const datas = this.financeByUserData.totalTrend;
+      let axisDate = [],
+        axisValue = [];
+      for (let i = 0; i < datas.length; i++) {
+        var rows = datas[i];
+        axisDate.push(rows.date);
+        axisValue.push(rows.total);
+      }
+      const myChart = echarts.init(this.$refs.totalTrend);
       // 绘制图表
       let option = {
         title: {
-          text: "折线图"
+          text: "投资总值趋势图"
+          // subtext: "每日不定时更新一次"
         },
-        // tooltip: {},
-        xAxis: {
-          type: "category",
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        tooltip: {
+          trigger: "axis",
+          formatter: function(params) {
+            return params[0].axisValue + "<br/>总值 : $" + params[0].value;
+          }
         },
-        yAxis: {
-          type: "value"
+        grid: {
+          x: 50,
+          x2: 40
         },
+        toolbox: {
+          show: true,
+          feature: {
+            mark: { show: true },
+            dataView: { show: true, readOnly: false },
+            magicType: { show: true, type: ["line", "bar"] },
+            restore: { show: true },
+            saveAsImage: { show: true }
+          }
+        },
+        // calculable: true,
+        xAxis: [
+          {
+            type: "category",
+            boundaryGap: false,
+            data: axisDate
+          }
+        ],
+        yAxis: [
+          {
+            type: "value",
+            min: 4000,
+            max: 9000,
+            axisLabel: {
+              formatter: "${value}"
+            }
+          }
+        ],
         series: [
           {
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
-            type: "line"
+            name: "总值",
+            type: "line",
+            data: axisValue,
+            lineStyle: {
+              color: "#fe6464"
+            },
+            markLine: {
+              data: [{ type: "average", name: "平均值" }]
+            }
           }
         ]
       };
       myChart.setOption(option, true);
     },
-    setOption2() {
-      let myChart = echarts.init(this.$refs.pie);
-
-      let option = (option = {
+    pushUserNumbel() {
+      const datas = this.financeByUserData.userBasic;
+      const accountDatas = this.financeByUserData.accountBasic;
+      let pieDatas = [];
+      for (let i = 0; i < datas.length; i++) {
+        var rows = datas[i];
+        pieDatas.push({ name: rows.asName, value: rows.quotient });
+      }
+      const myChart = echarts.init(this.$refs.userNumbel);
+      let option = {
         title: {
-          text: "饼图",
-          subtext: "数据纯属虚构"
-          //   x: "center"
+          text: "总:" + accountDatas.quotientTotal + "份",
+          x: "center",
+          y: "50%",
+          itemGap: 20,
+          textStyle: {
+            color: "rgba(30,144,255,0.8)",
+            fontFamily: "微软雅黑",
+            fontSize: 18,
+            fontWeight: "bolder"
+          }
         },
+        // color: [
+        //   "#FEC23E",
+        //   "#FE8280",
+        //   "#FF43BE",
+        //   "#FF01FD",
+        //   "#BE41FF",
+        //   "#8180FF",
+        //   "#3EC0FE",
+        //   "#01FFFF",
+        //   "#3EFFBE",
+        //   "#7EFF80",
+        //   "#FFFF01",
+        //   "#C0FF3F"
+        // ],
+        color: [
+          "#62c1fe",
+          "#5ad5b6",
+          "#ff9233",
+          "#d87aec",
+          "#fe6464",
+          "#EC87BF",
+          "#bcd55a",
+          "#d59e5a",
+          "#6d64fe"
+        ],
         tooltip: {
           trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)"
-        },
-        legend: {
-          orient: "vertical",
-          left: "left",
-          data: ["直接访问", "邮件营销", "联盟广告", "视频广告", "搜索引擎"]
+          formatter: "{a} <br/>{b} : {c}份 ({d}%)"
         },
         series: [
           {
-            name: "访问来源",
+            name: "份额占比",
             type: "pie",
-            radius: "55%",
-            center: ["50%", "60%"],
-            data: [
-              { value: 335, name: "直接访问" },
-              { value: 310, name: "邮件营销" },
-              { value: 234, name: "联盟广告" },
-              { value: 135, name: "视频广告" },
-              { value: 1548, name: "搜索引擎" }
-            ],
+            center: ["50%", "55%"],
+            radius: ["30%", "65%"],
+            x: "20%", // for funnel
+            data: pieDatas,
             itemStyle: {
+              // normal: {
+              //   label: {
+              //     show: true,
+              //     position: "center",
+              //     formatter: "{b}",
+              //     textStyle: {
+              //       baseline: "bottom"
+              //     }
+              //   },
+              //   labelLine: {
+              //     show: false
+              //   }
+              // },
               emphasis: {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
@@ -103,68 +218,231 @@ export default {
             }
           }
         ]
-      });
-
+      };
       myChart.setOption(option, true);
     },
-    setOption3() {
-      let myChart = echarts.init(this.$refs.map);
+    pushInvestorProfit() {
+      const datas = this.financeByUserData.userBasic;
+      const accountDatas = this.financeByUserData.accountBasic;
+      const totalTrendDatas = this.financeByUserData.totalTrend;
+      const newTotalSize = totalTrendDatas[totalTrendDatas.length - 1].total;
+      let userData = [],
+        startTotalData = [],
+        balanceData = [];
+      for (let i = 0; i < datas.length; i++) {
+        var rows = datas[i];
+        userData.push(rows.asName);
+        startTotalData.push(accountDatas.singleBalance * rows.quotient);
+        const _balance =
+          ((newTotalSize - accountDatas.balanceTotal) /
+            accountDatas.quotientTotal) *
+          rows.quotient;
+
+        balanceData.push(parseFloat(_balance.toFixed(2)));
+      }
+      const myChart = echarts.init(this.$refs.investorProfit);
       let option = {
         title: {
-          text: "2011全国GDP（亿元）"
+          text: "份额投资利润"
+          // subtext: "已扣除手续费"
+        },
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+          },
+          formatter: function(params) {
+            console.log(params);
+            return (
+              params[0].name +
+              "(" +
+              ((params[0].value / accountDatas.balanceTotal) * 100).toFixed(2) +
+              "%)" +
+              "<br/>盈利额 : $" +
+              params[1].value.toFixed(2) +
+              "<br/>盈利率 : " +
+              ((params[1].value / params[0].value) * 100).toFixed(2) +
+              "%<br/>" +
+              params[1].seriesName +
+              " : $" +
+              (params[1].value + params[0].value).toFixed(2) +
+              "<br/>" +
+              params[0].seriesName +
+              " : $" +
+              params[0].value.toFixed(2)
+            );
+          }
         },
         legend: {
-          x: "right",
-          selectedMode: false,
-          data: ["北京", "上海", "广东"]
+          data: ["投资额", "总市值"],
+          x: 150,
+          y: 20
         },
+        // toolbox: {
+        //   show: true,
+        //   feature: {
+        //     mark: { show: true },
+        //     dataView: { show: true, readOnly: false },
+        //     restore: { show: true },
+        //     saveAsImage: { show: true }
+        //   }
+        // },
+        // calculable: true,
+        grid: {
+          x: 50,
+          x2: 40
+        },
+        xAxis: [
+          {
+            type: "category",
+            data: userData
+          }
+        ],
+        yAxis: [
+          {
+            type: "value",
+            boundaryGap: [0, 0.1],
+            axisLabel: {
+              formatter: "${value}"
+            }
+          }
+        ],
         series: [
           {
-            name: "2011全国GDP分布",
-            type: "map",
-            mapType: "china",
-            // selectedMode: "multiple",
+            name: "投资额",
+            type: "bar",
+            stack: "sum",
+            barCategoryGap: "50%",
             itemStyle: {
-              normal: { label: { show: true } },
-              emphasis: { label: { show: true } }
+              normal: {
+                color: "#5ad5b6",
+                barBorderColor: "#5ad5b6",
+                barBorderWidth: 1,
+                barBorderRadius: 0,
+                label: {
+                  show: true,
+                  position: "insideTop"
+                }
+              }
             },
-            data: [
-              { name: "西藏", value: 605.83 },
-              { name: "青海", value: 1670.44 },
-              { name: "宁夏", value: 2102.21 },
-              { name: "海南", value: 2522.66 },
-              { name: "甘肃", value: 5020.37 },
-              { name: "贵州", value: 5701.84 },
-              { name: "新疆", value: 6610.05 },
-              { name: "云南", value: 8893.12 },
-              { name: "重庆", value: 10011.37 },
-              { name: "吉林", value: 10568.83 },
-              { name: "山西", value: 11237.55 },
-              { name: "天津", value: 11307.28 },
-              { name: "江西", value: 11702.82 },
-              { name: "广西", value: 11720.87 },
-              { name: "陕西", value: 12512.3 },
-              { name: "黑龙江", value: 12582 },
-              { name: "内蒙古", value: 14359.88 },
-              { name: "安徽", value: 15300.65 },
-              { name: "北京", value: 16251.93, selected: true },
-              { name: "福建", value: 17560.18 },
-              { name: "上海", value: 19195.69, selected: true },
-              { name: "湖北", value: 19632.26 },
-              { name: "湖南", value: 19669.56 },
-              { name: "四川", value: 21026.68 },
-              { name: "辽宁", value: 22226.7 },
-              { name: "河北", value: 24515.76 },
-              { name: "河南", value: 26931.03 },
-              { name: "浙江", value: 32318.85 },
-              { name: "山东", value: 45361.85 },
-              { name: "江苏", value: 49110.27 },
-              { name: "广东", value: 53210.28, selected: true }
-            ]
+            data: startTotalData
+          },
+          {
+            name: "总市值",
+            type: "bar",
+            stack: "sum",
+            itemStyle: {
+              normal: {
+                color: "#fe6464",
+                barBorderColor: "tomato",
+                barBorderWidth: 1,
+                barBorderRadius: 0,
+
+                label: {
+                  show: true,
+                  position: "top",
+                  formatter: function(params) {
+                    for (
+                      var i = 0, l = option.xAxis[0].data.length;
+                      i < l;
+                      i++
+                    ) {
+                      if (option.xAxis[0].data[i] == params.name) {
+                        return (
+                          option.series[0].data[i] + params.value
+                        ).toFixed(2);
+                      }
+                    }
+                  },
+                  textStyle: {
+                    color: "tomato"
+                  }
+                }
+              }
+            },
+            data: balanceData
           }
         ]
       };
       myChart.setOption(option);
+    },
+    pushHistoryTrend() {
+      const historyTrend = this.financeByUserData.historyTrend;
+      let stage = [],
+        startValue = [],
+        endValue = [];
+      for (let i = 0; i < historyTrend.length; i++) {
+        var rows = historyTrend[i];
+        stage.push(rows.stage);
+        startValue.push(rows.startValue);
+        endValue.push(rows.endValue);
+      }
+      const myChart = echarts.init(this.$refs.historyTrend);
+      let option = {
+        title: {
+          text: "往期盈利回顾"
+        },
+        tooltip: {
+          trigger: "axis"
+        },
+        legend: {
+          data: ["总投资", "总市值"],
+          x: 150,
+          y: 20
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            mark: { show: true },
+            dataView: { show: true, readOnly: false },
+            magicType: { show: true, type: ["line", "bar"] },
+            restore: { show: true },
+            saveAsImage: { show: true }
+          }
+        },
+        calculable: true,
+        xAxis: [
+          {
+            type: "category",
+            data: stage
+          }
+        ],
+        yAxis: [
+          {
+            type: "value"
+          }
+        ],
+        series: [
+          {
+            name: "总投资",
+            type: "bar",
+            data: startValue,
+            itemStyle: {
+              normal: {
+                color: "#5ad5b6"
+              }
+            },
+            markLine: {
+              data: [{ type: "average", name: "平均值" }]
+            }
+          },
+          {
+            name: "总市值",
+            type: "bar",
+            data: endValue,
+            itemStyle: {
+              normal: {
+                color: "#fe6464"
+              }
+            },
+            markLine: {
+              data: [{ type: "average", name: "平均值" }]
+            }
+          }
+        ]
+      };
+      myChart.setOption(option, true);
     }
   }
 };
@@ -174,12 +452,14 @@ export default {
   width: 100%;
   overflow: auto;
 }
-.statisticalChart div {
-  /* float: left; */
+.statisticalChart div.view {
   height: 300px;
   margin: 20px 0;
-  background: rgb(218, 235, 211);
   border-radius: 3px;
+  background-color: #fff;
+  border: 1px solid #e3e3e3;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 </style>
 
