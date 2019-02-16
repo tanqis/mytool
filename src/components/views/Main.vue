@@ -3,7 +3,6 @@
     <div class="myCard  bounceIn"
          v-for="(iteme,index) in cardsData"
          :key="index">
-      <!-- @click="cardClick(iteme.url,iteme.name)" -->
       <router-link tag="p"
                    :to="iteme.url"><i :class="iteme.icon"></i>{{iteme.name}}</router-link>
     </div>
@@ -13,32 +12,11 @@
 export default {
   data() {
     return {
-      cardsData: [
-        {
-          name: "个人简介",
-          style: "",
-          icon: "fa fa-user-secret",
-          url: "/myself"
-        },
-        { name: "代办事项", style: "", icon: "el-icon-time", url: "/toDos" },
-        {
-          name: "在线记账",
-          style: "",
-          icon: "el-icon-edit-outline",
-          url: "/accounts"
-        },
-        { name: "思维导图", style: "", icon: "fa fa-sitemap", url: "/mindMap" },
-        { name: "生活日记", style: "", icon: "fa fa-glass", url: "/lifeDays" },
-        {
-          name: "金融投资",
-          style: "",
-          icon: "fa fa-area-chart",
-          url: "/financeMap"
-        },
-        { name: "首页事项", style: "", icon: "fa fa-fire", url: "/homeToDos" },
-        { name: "工具辅助", style: "", icon: "fa fa-wrench", url: "/toolHelp" }
-      ]
+      cardsData: []
     };
+  },
+  created() {
+    this.getMainContent();
   },
   mounted() {
     this.$message({
@@ -47,10 +25,10 @@ export default {
     });
   },
   methods: {
-    cardClick(url, name) {
-      if ("" === url) {
-        alert("[" + name + "]建设中~~~");
-      }
+    getMainContent() {
+      this.$axios("./static/mainMenu.json").then(msg => {
+        this.cardsData = msg.data;
+      });
     }
   }
 };
