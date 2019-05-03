@@ -1,13 +1,15 @@
 <template>
   <div class="statisticalChart">
     <el-alert style="margin-top: 20px;"
-              title="当前数据每日更新一次；每日数据有0-$20波动精度偏差，不便之处敬请谅解；撤资请提前一个星期联系作者本人"
+              :title="financeIip"
               type="info"
               :closable="false"
               show-icon>
     </el-alert>
     <div class="view"
          ref="totalTrend"></div>
+    <!-- <div class="view"
+         ref="kMap"></div> -->
     <div class="view"
          ref="investorProfit"></div>
     <div class="view"
@@ -17,10 +19,11 @@
   </div>
 </template>
 <script>
-var echarts = require("echarts/lib/echarts");
+var echarts = require("echarts");
 require("echarts/lib/chart/bar");
 require("echarts/lib/chart/line");
 require("echarts/lib/chart/pie");
+// require("echarts/lib/chart/k");
 // 引入提示框和标题组件
 require("echarts/lib/component/tooltip");
 require("echarts/lib/component/title");
@@ -30,6 +33,7 @@ export default {
   data() {
     return {
       financeByUserData: [],
+      financeIip: "",
       financeData: []
     };
   },
@@ -38,18 +42,33 @@ export default {
     this.getFinanceByUserData()
       .then(res => {
         _this.financeByUserData = res;
+        _this.financeIip = res.financeIip;
         _this.pushTotalTrend();
+        _this.pushKMap();
         _this.pushUserNumbel();
         _this.pushInvestorProfit();
         _this.pushHistoryTrend();
+        const data = this.financeByUserData;
+        if (data.isShowTip) {
+          this.$alert(data.showTipContent, "温馨提示", {
+            confirmButtonText: "ok",
+            dangerouslyUseHTMLString: true,
+            callback: action => {
+              // if (action) {
+              //   this.$message({
+              //     type: "info",
+              //     message: `臭不要脸`
+              //   });
+              // }
+            }
+          });
+        }
       })
       .catch(err => {
         console.log(err);
       });
   },
-  mounted() {
-    //挂载结束
-  },
+  mounted() {},
   methods: {
     getFinanceData() {
       this.$axios("./static/finance.json").then(msg => {
@@ -77,11 +96,9 @@ export default {
         axisValue.push(rows.total);
       }
       const myChart = echarts.init(this.$refs.totalTrend);
-      // 绘制图表
       let option = {
         title: {
           text: "投资总值趋势图"
-          // subtext: "每日不定时更新一次"
         },
         tooltip: {
           trigger: "axis",
@@ -114,8 +131,8 @@ export default {
         yAxis: [
           {
             type: "value",
-            min: 4000,
-            max: 9000,
+            min: 5500,
+            max: 7500,
             axisLabel: {
               formatter: "${value}"
             }
@@ -137,6 +154,7 @@ export default {
       };
       myChart.setOption(option, true);
     },
+    pushKMap() {},
     pushUserNumbel() {
       const datas = this.financeByUserData.userBasic;
       const accountDatas = this.financeByUserData.accountBasic;
@@ -253,7 +271,6 @@ export default {
             type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
           },
           formatter: function(params) {
-            console.log(params);
             return (
               params[0].name +
               "(" +
@@ -338,7 +355,6 @@ export default {
                 barBorderColor: "tomato",
                 barBorderWidth: 1,
                 barBorderRadius: 0,
-
                 label: {
                   show: true,
                   position: "top",
@@ -384,24 +400,58 @@ export default {
           text: "往期盈利回顾"
         },
         tooltip: {
-          trigger: "axis"
+          trigger: "axis",
+          formatter: function(params) {
+            return (
+              "[" +
+              params[0].name +
+              "]投资回报对比<br/>盈利率" +
+              ":" +
+              (
+                ((parseFloat(params[1].value) - parseFloat(params[0].value)) /
+                  parseFloat(params[0].value)) *
+                100
+              ).toFixed(2) +
+              "%<br/>" +
+              params[0].seriesName +
+              ":$" +
+              params[0].value +
+              "<br/>" +
+              params[1].seriesName +
+              ":$" +
+              params[1].value +
+              "<br/>"
+            );
+            // (
+            //   params[0].seriesName +
+            //   "(" +
+            //   ((params[0].value / accountDatas.balanceTotal) * 100).toFixed(2) +
+            //   "%)" +
+            //   "<br/>盈利额 : $" +
+            //   params[1].value.toFixed(2) +
+            //   "<br/>盈利率 : " +
+            //   ((params[1].value / params[0].value) * 100).toFixed(2) +
+            //   "%<br/>" +
+            //   params[1].seriesName +
+            //   " : $" +
+            //   (params[1].value + params[0].value).toFixed(2) +
+            //   "<br/>" +
+            //   params[0].seriesName +
+            //   " : $" +
+            //   params[0].value.toFixed(2)
+            // );
+          }
         },
         legend: {
           data: ["总投资", "总市值"],
           x: 150,
           y: 20
         },
-        toolbox: {
-          show: true,
-          feature: {
-            mark: { show: true },
-            dataView: { show: true, readOnly: false },
-            magicType: { show: true, type: ["line", "bar"] },
-            restore: { show: true },
-            saveAsImage: { show: true }
-          }
+        grid: {
+          x: 50,
+          x2: 40
         },
-        calculable: true,
+        // calculable: true,
         xAxis: [
           {
             type: "category",
@@ -410,7 +460,10 @@ export default {
         ],
         yAxis: [
           {
-            type: "value"
+            type: "value",
+            axisLabel: {
+              formatter: "${value}"
+            }
           }
         ],
         series: [

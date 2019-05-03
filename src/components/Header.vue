@@ -7,27 +7,50 @@
       </router-link>
     </div>
     <div class="mycell myUser">
-      <!-- <i class="el-icon-search"></i> -->
-      <!-- <el-badge is-dot
-                class="item">
-        <i class="fa fa-user-circle"
-           @click="userFn"></i>
-      </el-badge> -->
-      <i class="fa fa-user-circle"
-         @click="userFn"></i>
+      <el-dropdown trigger="click"
+                   @command="userFn">
+        <span class="el-dropdown-link">
+          <i class="fa fa-user-circle"></i><!-- <i class="el-icon-arrow-down el-icon--right"></i> -->
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="logIn">登录</el-dropdown-item>
+          <el-dropdown-item command="logOut">注销</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+
     </div>
-    <div class="sayHello">[游客],欢迎您!</div>
+    <div class="sayHello">[ 游客 ],欢迎您!</div>
   </div>
 </template>
 
 <script>
 export default {
   data() {
-    return {};
+    return {
+      user: this.$user
+    };
   },
   methods: {
-    userFn() {
-      this.$message("用户模块正在建设中，请稍后");
+    logOut() {
+      this.$axios
+        .get(this.$url.userLogOut)
+        .then(msg => {
+          console.error("logOut");
+        })
+        .catch(error => {
+          console.error("logOut error");
+        });
+    },
+    userFn(val) {
+      switch (val) {
+        case "logIn":
+          window.location.href = "#/user/logIn";
+          break;
+        case "logOut":
+          this.logOut();
+          break;
+        default:
+      }
     }
   }
 };
@@ -57,9 +80,13 @@ export default {
 .myHeaderBox .sayHello {
   position: absolute;
   text-align: center;
-  font-size: 12px;
-  width: 80px;
-  left: calc(50% - 40px);
+  font-size: 16px;
+  width: 160px;
+  left: calc(50% - 80px);
   top: 5px;
+}
+.myHeaderBox .el-dropdown {
+  color: #fff;
+  font-size: 28px;
 }
 </style>

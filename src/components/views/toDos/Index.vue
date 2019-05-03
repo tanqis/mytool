@@ -2,8 +2,8 @@
   <div class="todosBox">
 
     <el-checkbox-group v-model="checkedCities">
-      <el-checkbox v-model="checkAll"
-                   @change="handleCheckAllChange">全选</el-checkbox>
+      <!-- <el-checkbox v-model="checkAll"
+                   @change="handleCheckAllChange">全选</el-checkbox> -->
       <el-checkbox v-for="city in cities"
                    :label="city"
                    :key="city">{{city}}</el-checkbox>
@@ -47,7 +47,7 @@ export default {
           cancelButtonText: "要脸(取消)",
           confirmButtonText: "不要脸(确定)",
           callback: action => {
-            if (action) {
+            if (action != "cancel") {
               this.$message({
                 type: "info",
                 message: `臭不要脸`
@@ -71,11 +71,6 @@ export default {
 .el-checkbox {
   display: block;
   text-align: left;
-}
-</style>
-<style>
-.el-message-box {
-  width: 300px !important;
 }
 </style>
 
