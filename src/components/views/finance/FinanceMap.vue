@@ -95,6 +95,9 @@ export default {
         axisDate.push(rows.date);
         axisValue.push(rows.total);
       }
+      const minValue = Math.min.apply(null, axisValue),
+        maxValue = parseInt(Math.max.apply(null, axisValue)) + 200;
+      console.log(minValue);
       const myChart = echarts.init(this.$refs.totalTrend);
       let option = {
         title: {
@@ -131,8 +134,8 @@ export default {
         yAxis: [
           {
             type: "value",
-            min: 5500,
-            max: 7500,
+            min: minValue,
+            max: maxValue,
             axisLabel: {
               formatter: "${value}"
             }
