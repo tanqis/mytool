@@ -2,9 +2,8 @@
   <div class="lifeBox">
     <div>
       <ol>
-        <li v-for="(user,index) in users"
-            :key="index">
-          {{user.userName}}--{{user.userEmail}}--{{user.createDate}}
+        <li v-for="(user, index) in users" :key="index">
+          {{ user.userName }}--{{ user.userEmail }}--{{ user.createDate }}
         </li>
       </ol>
     </div>
@@ -31,7 +30,7 @@ export default {
             this.$message({
               showClose: true,
               message: errMsg,
-              type: "error"
+              type: 'error'
             });
           } else {
             this.users = msg.data.data;
@@ -47,7 +46,7 @@ export default {
 <style scoped>
 .lifeBox {
   height: 100%;
-  background: url("../../../assets/imgs/life.jpg");
+  /* background: url("@/assets/imgs/life.jpg"); */
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }

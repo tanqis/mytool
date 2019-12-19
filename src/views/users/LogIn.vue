@@ -69,7 +69,7 @@ export default {
     };
   },
   methods: {
-    sava(obj) {
+    userLogIn(obj) {
       this.$axios
         .post(this.$url.userLogIn, obj)
         .then(msg => {
@@ -108,7 +108,7 @@ export default {
     submitForm(ref) {
       this.$refs[ref].validate(valid => {
         if (valid) {
-          this.sava(this.logInForm);
+          this.userLogIn(this.logInForm);
         } else {
           this.$message.error("输入有误，请确认信息无误再登录");
           return false;

@@ -3,33 +3,33 @@
     <div class="mycell">
       <router-link tag="i"
                    to="/"
-                   class="fa fa-home">
+                   class="el-icon-house">
       </router-link>
     </div>
     <div class="mycell">
       <router-link tag="i"
                    to="/"
-                   class="fa fa-book">
+                   class="el-icon-notebook-1">
         <!-- heartbeat -->
       </router-link>
     </div>
     <div class="mycell">
       <router-link tag="i"
                    to="/"
-                   class="fa fa-balance-scale">
+                   class="el-icon-sunrise-1">
       </router-link>
     </div>
     <div class="mycell">
       <router-link tag="i"
                    to="/"
-                   class="fa fa-shopping-cart">
+                   class="el-icon-shopping-cart-full">
       </router-link>
     </div>
     <div class="mycell">
       <el-dropdown trigger="click"
                    @command="userFn">
         <span class="el-dropdown-link">
-          <i class="fa fa-user-circle"></i>
+          <i class="el-icon-user"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="logIn">登录</el-dropdown-item>
@@ -88,6 +88,7 @@ export default {
   float: left;
   width: 20%;
   border: 0;
+  text-align: center;
 }
 .myHeaderBox .el-dropdown {
   color: #fff;

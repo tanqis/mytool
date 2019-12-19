@@ -1,21 +1,28 @@
 [{
         "name": "金融投资",
         "style": "",
-        "icon": "fa fa-area-chart",
+        "icon": "el-icon-pie-chart",
         "class": "",
         "url": "/financeMap"
     },
     {
+        "name": "金融计算",
+        "style": "",
+        "icon": "el-icon-data-analysis",
+        "class": "",
+        "url": "/fcIndex"
+    },
+    {
         "name": "个人简介",
         "style": "",
-        "icon": "fa fa-user-secret",
+        "icon": "el-icon-user",
         "class": "miniWidth",
         "url": "/myself"
     },
     {
         "name": "代办事项",
         "style": "",
-        "icon": "el-icon-time",
+        "icon": "el-icon-phone",
         "class": "miniWidth",
         "url": "/toDos"
     },
@@ -29,28 +36,28 @@
     {
         "name": "思维导图",
         "style": "",
-        "icon": "fa fa-sitemap",
+        "icon": "el-icon-cpu",
         "class": "miniWidth",
         "url": "/mindMap"
     },
     {
         "name": "生活日记",
         "style": "",
-        "icon": "fa fa-glass",
+        "icon": "el-icon-box",
         "class": "miniWidth",
         "url": "/lifeDays"
     },
     {
         "name": "首页事项",
         "style": "",
-        "icon": "fa fa-fire",
+        "icon": "el-icon-set-up",
         "class": "miniWidth",
         "url": "/homeToDos"
     },
     {
         "name": "工具辅助",
         "style": "",
-        "icon": "fa fa-wrench",
+        "icon": "el-icon-setting",
         "class": "",
         "url": "/toolHelp"
     }

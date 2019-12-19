@@ -5,40 +5,45 @@ import Router from 'vue-router'
 import Index from '@/components/Index'
 
 //test
-import HelloWorld from '@/components/views/test/HelloWorld'
-import HomeToDos from '@/components/views/test/HomeToDos'
+import HelloWorld from '@/views/test/HelloWorld'
+import HomeToDos from '@/views/test/HomeToDos'
 
 //home
-import Main from "@/components/views/home/Main.vue";
+import Main from "@/views/home/Main.vue";
 
 //finance
-import FinanceMap from '@/components/views/finance/FinanceMap'
+import FinanceMap from '@/views/finance/FinanceMap'
 
 //lineAccounts
-import Accounts from '@/components/views/lineAccounts/Index'
+import Accounts from '@/views/lineAccounts/Index'
 
 //lifeDays
-import LifeDays from '@/components/views/lifeDays/Index'
+import LifeDays from '@/views/lifeDays/Index'
 
 //mindMap
-import MindMap from '@/components/views/mindMap/Index'
-import ViewGraph from '@/components/views/mindMap/ViewGraph'
+import MindMapList from '@/views/mindMap/MindMapList'
+import ViewGraph from '@/views/mindMap/ViewGraph'
+import MindMapManage from '@/views/mindMap/mindMapManage'
 
 //myself
-import Myself from '@/components/views/myself/Index'
+import Myself from '@/views/myself/Index'
 
 //toDos
-import ToDos from '@/components/views/toDos/Index'
+import ToDos from '@/views/toDos/Index'
 
 //toolHelp
-import ToolHelp from '@/components/views/toolHelp/Index'
-import ActiveAnimat from '@/components/views/toolHelp/ActiveAnimat'
-import FontHelp from '@/components/views/toolHelp/FontHelp'
+import ToolHelp from '@/views/toolHelp/Index'
+import ActiveAnimat from '@/views/toolHelp/ActiveAnimat'
+import FontHelp from '@/views/toolHelp/FontHelp'
 
 //user
-import LogIn from '@/components/views/users/LogIn'
-import ForgetPwd from '@/components/views/users/ForgetPwd'
-import Register from '@/components/views/users/Register'
+import LogIn from '@/views/users/LogIn'
+import ForgetPwd from '@/views/users/ForgetPwd'
+import Register from '@/views/users/Register'
+
+//financialCalculations
+import fcIndex from '@/views/financialCalculations/Index'
+import Calculatioins from '@/views/financialCalculations/Calculatioins'
 
 Vue.use(Router)
 
@@ -78,14 +83,19 @@ export default new Router({
       },
       {
         path: '/mindMap',
-        name: 'MindMap',
-        component: MindMap,
+        name: 'MindMapList',
+        component: MindMapList,
         children: []
       },
       {
         path: '/viewGraph',
         name: 'ViewGraph',
         component: ViewGraph
+      },
+      {
+        path: '/mindMapManage',
+        name: 'MindMapManage',
+        component: MindMapManage
       }, {
         path: '/myself',
         name: 'Myself',
@@ -105,16 +115,26 @@ export default new Router({
         path: '/toDos',
         name: 'ToDos',
         component: ToDos
+      },
+      {
+        path: '/fcIndex',
+        name: 'FCIndex',
+        component: fcIndex
+      },
+      {
+        path: '/calculatioins',
+        name: 'Calculatioins',
+        component: Calculatioins
+      }, {
+        path: '/user/logIn',
+        name: 'user',
+        component: LogIn
       }
     ]
   }, {
     path: '/test',
     name: 'HelloWorld',
     component: HelloWorld
-  }, {
-    path: '/user/logIn',
-    name: 'user',
-    component: LogIn
   }, {
     path: '/user/forgetPwd',
     name: 'ForgetPwd',

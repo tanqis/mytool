@@ -28,21 +28,27 @@
     </div>
 
     <div class="newsBoxs">
-      <p class="newsTitle">股市提醒</p>
+      <p class="newsTitle">自省</p>
       <div class="newsBody">
-        <p class="left">当前市场股票由太多人为因素造成一波牛市，即人造牛市，请各位小伙伴谨慎入市。</p>
-        <p class="left">目前应该采取观望的心态看待这波行情。</p>
-        <p class="left">实在压抑不住内心的躁动，可以采取1/10仓位递增形式入市。</p>
-        <p class="right">--苏谭琦</p>
+        <p class="left">我辈男儿</p>
+        <p class="left">吾日三省吾身,见贤思齐焉,见不贤而自省也</p>
+        <p class="right">--《论语》</p>
       </div>
     </div>
     <div class="newsBoxs">
+      <p class="newsTitle">兵法</p>
+      <div class="newsBody">
+        <p class="left">夫未战而庙算胜者，得算多也；未战而庙算不胜者，得算少也。多算胜，少算不胜，而况于无算乎！</p>
+        <p class="right">--《孙子兵法》</p>
+      </div>
+    </div>
+    <!-- <div class="newsBoxs">
       <p class="newsTitle">外汇注册</p>
       <div class="newsBody">
         <p class="left">有要自己去玩外汇小伙伴，点下面链接注册</p>
         <p class="left"><a href="https://www.exness.com/a/t3vrm3vr">https://www.exness.com/a/t3vrm3vr</a></p>
       </div>
-    </div>
+    </div> -->
     <div class="newsBoxs">
       <p class="newsTitle">小伙伴招募</p>
       <div class="newsBody">
@@ -147,6 +153,7 @@ export default {
   height: 160px;
   padding: 10px 0;
   overflow: hidden;
+  text-align: center;
 }
 .menuBoxs ul {
   width: 100%;

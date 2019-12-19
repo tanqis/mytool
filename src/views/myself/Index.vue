@@ -71,7 +71,7 @@ export default {
   height: 80px;
   border-radius: 40px;
   margin: 0 auto;
-  background: url("../../../assets/imgs/myself.png") no-repeat;
+  /* background: url("@/assets/imgs/myself.png") no-repeat; */
   background-size: 80px 80px;
 }
 p {

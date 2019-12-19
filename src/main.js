@@ -1,12 +1,20 @@
 import Vue from 'vue'
 import ElementUI from 'element-ui'
-import axios from 'axios'
+import "animate.css"
+import "element-ui/lib/theme-chalk/index.css"
+import "@/assets/css/main.css"
 import App from './App'
 import router from './router'
 
-const url = require('../config/url')
+// @import "animate.css";
+/* @import "font-awesome"; */
+// @import "element-ui/lib/theme-chalk/index.css";
+// @import "./assets/css/main";
+
+import axios from './assets/js/axiosConfig.js'
+import url from './assets/js/urlConfig'
 // import store from './store'
-// const $Mock = require('mockjs')
+// const $Mock = require('mockjs') 
 
 Vue.prototype.$axios = axios
 Vue.prototype.$url = url
