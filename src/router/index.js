@@ -1,19 +1,49 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '@/components/Index'
-import HelloWorld from '@/components/views/HelloWorld'
-import Main from "@/components/views/Main.vue";
-import FontHelp from '@/components/views/FontHelp'
 
-import FinanceMap from '@/components/views/finance/FinanceMap'
-import Accounts from '@/components/views/Accounts'
-import HomeToDos from '@/components/views/HomeToDos'
-import LifeDays from '@/components/views/lifeDays/Index'
-import MindMap from '@/components/views/mindMap/Index'
-import Myself from '@/components/views/myself/Index'
-import ToDos from '@/components/views/toDos/Index'
-import ToolHelp from '@/components/views/toolHelp/Index'
-import ActiveAnimat from '@/components/views/toolHelp/ActiveAnimat'
+//根目录
+import Index from '@/components/Index'
+
+//test
+import HelloWorld from '@/views/test/HelloWorld'
+import HomeToDos from '@/views/test/HomeToDos'
+
+//home
+import Main from "@/views/home/Main.vue";
+
+//finance
+import FinanceMap from '@/views/finance/FinanceMap'
+
+//lineAccounts
+import Accounts from '@/views/lineAccounts/Index'
+
+//lifeDays
+import LifeDays from '@/views/lifeDays/Index'
+
+//mindMap
+import MindMapList from '@/views/mindMap/MindMapList'
+import ViewGraph from '@/views/mindMap/ViewGraph'
+import MindMapManage from '@/views/mindMap/mindMapManage'
+
+//myself
+import Myself from '@/views/myself/Index'
+
+//toDos
+import ToDos from '@/views/toDos/Index'
+
+//toolHelp
+import ToolHelp from '@/views/toolHelp/Index'
+import ActiveAnimat from '@/views/toolHelp/ActiveAnimat'
+import FontHelp from '@/views/toolHelp/FontHelp'
+
+//user
+import LogIn from '@/views/users/LogIn'
+import ForgetPwd from '@/views/users/ForgetPwd'
+import Register from '@/views/users/Register'
+
+//financialCalculations
+import fcIndex from '@/views/financialCalculations/Index'
+import Calculatioins from '@/views/financialCalculations/Calculatioins'
 
 Vue.use(Router)
 
@@ -53,10 +83,20 @@ export default new Router({
       },
       {
         path: '/mindMap',
-        name: 'MindMap',
-        component: MindMap
+        name: 'MindMapList',
+        component: MindMapList,
+        children: []
       },
       {
+        path: '/viewGraph',
+        name: 'ViewGraph',
+        component: ViewGraph
+      },
+      {
+        path: '/mindMapManage',
+        name: 'MindMapManage',
+        component: MindMapManage
+      }, {
         path: '/myself',
         name: 'Myself',
         component: Myself
@@ -75,11 +115,33 @@ export default new Router({
         path: '/toDos',
         name: 'ToDos',
         component: ToDos
+      },
+      {
+        path: '/fcIndex',
+        name: 'FCIndex',
+        component: fcIndex
+      },
+      {
+        path: '/calculatioins',
+        name: 'Calculatioins',
+        component: Calculatioins
+      }, {
+        path: '/user/logIn',
+        name: 'user',
+        component: LogIn
       }
     ]
   }, {
     path: '/test',
     name: 'HelloWorld',
     component: HelloWorld
+  }, {
+    path: '/user/forgetPwd',
+    name: 'ForgetPwd',
+    component: ForgetPwd,
+  }, {
+    path: '/user/register',
+    name: 'Register',
+    component: Register,
   }]
 })

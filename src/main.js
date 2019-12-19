@@ -1,17 +1,24 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-import axios from 'axios'
+import "animate.css"
+import "element-ui/lib/theme-chalk/index.css"
+import "@/assets/css/main.css"
 import App from './App'
 import router from './router'
-import 'animate.css'
+
+// @import "animate.css";
+/* @import "font-awesome"; */
+// @import "element-ui/lib/theme-chalk/index.css";
+// @import "./assets/css/main";
+
+import axios from './assets/js/axiosConfig.js'
+import url from './assets/js/urlConfig'
 // import store from './store'
-const $Mock = require('mockjs')
+// const $Mock = require('mockjs') 
 
 Vue.prototype.$axios = axios
-Vue.prototype.$Mock = $Mock
+Vue.prototype.$url = url
+// Vue.prototype.$Mock = $Mock
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 

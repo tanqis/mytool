@@ -18,6 +18,14 @@ module.exports = {
         pathRewrite: {
           '^/apiss': ''
         }
+      },
+      '/toolsCore/API/*': {
+        target: 'http://localhost:8087/',
+        // secure: true, //https
+        changeOrigin: true,
+        pathRewrite: {
+          '^/toolsCore/API': 'toolsCore/API'
+        }
       }
     },
 

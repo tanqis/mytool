@@ -1,11 +1,10 @@
 <template>
   <div class="myPage">
-    <div class="myHeader">
+    <!-- <div class="myHeader">
       <Header></Header>
-    </div>
+    </div> -->
     <div class="myMain">
       <div class="myContenter">
-        <!-- <Main></Main> -->
         <router-view></router-view>
       </div>
       <div class="myFooter">
@@ -44,8 +43,8 @@ export default {
 .myHeader,
 .myFooter {
   width: 100%;
-  height: 60px;
-  line-height: 60px;
+  height: 48px;
+  line-height: 48px;
   background: linear-gradient(#7c8df3, #83bbf5);
   /* text-align: center; */
 }
@@ -54,12 +53,14 @@ export default {
   z-index: 99;
 }
 .myMain {
-  margin-top: 60px;
+  /* margin-top: 60px; */
   width: 100%;
+  height: 100%; /*calc(100%);*/
 }
 .myMain > .myContenter {
-  padding: 20px;
+  /* padding: 20px; */
   padding-top: 0;
   overflow: auto;
+  height: calc(100% - 48px);
 }
 </style>
