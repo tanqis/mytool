@@ -68,7 +68,9 @@ axios.interceptors.response.use(res => {
 }, error => {
     loading.close();
     if (error.response.status === 404) {
-        console.log("【404】API接口路径错误：" + error.request.responseURL)
+        console.log("【" + error.response.status + "】API接口路径错误：" + error.request.responseURL)
+    } else if (error.response.status === 504) {
+        console.log("【" + error.response.status + "】请求超时：" + error.request.responseURL)
     }
     return Promise.reject(error);
 })

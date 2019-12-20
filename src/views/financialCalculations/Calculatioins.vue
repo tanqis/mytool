@@ -5,103 +5,96 @@
         <el-col :span="6">
           基础信息：
         </el-col>
-        <el-col :span="8"
-                class="labelCol">
-          <el-input v-model.number="formData.productId"
-                    size="mini"
-                    :disabled="initArgs.id===undefined?false:true"
-                    placeholder="产品代码"></el-input>
+        <el-col :span="8" class="labelCol">
+          <el-input
+            v-model.number="formData.productId"
+            size="mini"
+            :disabled="initArgs.id === undefined ? false : true"
+            placeholder="产品代码"
+          ></el-input>
         </el-col>
         <el-col :span="10">
-          <el-input v-model.number="formData.productName"
-                    size="mini"
-                    :disabled="initArgs.id===undefined?false:true"
-                    placeholder="产品名称"></el-input>
+          <el-input
+            v-model.number="formData.productName"
+            size="mini"
+            :disabled="initArgs.id === undefined ? false : true"
+            placeholder="产品名称"
+          ></el-input>
         </el-col>
       </el-row>
 
-      <el-row v-for="(item, index) in formData.productPriceArrs"
-              :key="index">
-        <el-col :span="2"
-                class="labelCol">
+      <el-row v-for="(item, index) in formData.productPriceArrs" :key="index">
+        <el-col :span="2" class="labelCol">
           {{ index + 1 }}
         </el-col>
-        <el-col :span="4"
-                class="labelCol">
-          <el-input v-model.number="item.buyPrice"
-                    size="mini"
-                    placeholder="价格"></el-input>
+        <el-col :span="4" class="labelCol">
+          <el-input
+            v-model.number="item.buyPrice"
+            size="mini"
+            placeholder="价格"
+          ></el-input>
         </el-col>
         <el-col :span="8">
-          <el-switch v-model.number="item.buyType"
-                     size="mini"
-                     active-text="买"
-                     :active-value="1"
-                     inactive-text="卖"
-                     :inactive-value="0">
+          <el-switch
+            v-model.number="item.buyType"
+            size="mini"
+            active-text="买"
+            :active-value="1"
+            inactive-text="卖"
+            :inactive-value="0"
+          >
           </el-switch>
         </el-col>
         <el-col :span="8">
-          <el-input-number v-model.number="item.buyNum"
-                           :min="0"
-                           :max="20"
-                           size="mini"></el-input-number>
+          <el-input-number
+            v-model.number="item.buyNum"
+            :min="0"
+            :max="20"
+            size="mini"
+          ></el-input-number>
         </el-col>
         <el-col :span="2">
-          <i class="el-icon-setting"
-             @click="toolFormItem(index)">
-          </i>
+          <i class="el-icon-setting" @click="toolFormItem(index)"> </i>
         </el-col>
       </el-row>
 
       <el-row>
         <el-col :span="24">
-          <el-button type="primary"
-                     size="mini"
-                     icon="el-icon-plus"
-                     circle
-                     @click="addFormItem(false)"></el-button>
+          <el-button
+            type="primary"
+            size="mini"
+            icon="el-icon-plus"
+            circle
+            @click="addFormItem(false)"
+          ></el-button>
         </el-col>
       </el-row>
     </div>
     <hr />
     <div class="options">
-      <el-button type="primary"
-                 size="mini"
-                 @click="run">执行</el-button>
+      <el-button type="primary" size="mini" @click="run">执行</el-button>
 
-      <el-button type="primary"
-                 size="mini"
-                 @click="save">保存</el-button>
-      <el-button type="primary"
-                 size="mini"
-                 @click="exports">导出</el-button>
-      <el-button type="primary"
-                 size="mini"
-                 @click="imports">导入</el-button>
-      <el-button v-if="initArgs.id===undefined"
-                 size="mini">重置</el-button>
+      <el-button type="primary" size="mini" @click="save">保存</el-button>
+      <el-button type="primary" size="mini" @click="exports">导出</el-button>
+      <el-button type="primary" size="mini" @click="imports">导入</el-button>
+      <el-button v-if="initArgs.id === undefined" size="mini">重置</el-button>
     </div>
     <hr />
     <div>
-      <el-input type="textarea"
-                :autosize="{ minRows: 2, maxRows: 6}"
-                v-model="result">
+      <el-input
+        type="textarea"
+        :autosize="{ minRows: 2, maxRows: 6 }"
+        v-model="result"
+      >
       </el-input>
     </div>
-    <el-dialog title="操作区"
-               :visible.sync="toolDialogVisible"
-               width="60%">
-      <span><i class="el-icon-delete"
-           @click="delFormItem()"></i>
-        <i class="el-icon-upload2"
-           @click="upMoveItem()"></i>
-        <i class="el-icon-download"
-           @click="downMoveItem()"></i>
-        <i class="el-icon-plus"
-           @click="upAddItem()"></i>
-        <i class="el-icon-plus"
-           @click="downAddItem()"></i>
+    <el-dialog title="操作区" :visible.sync="toolDialogVisible" width="60%">
+      <span
+        ><i class="el-icon-delete" @click="delFormItem()"></i>
+        <i class="el-icon-upload2" @click="upMoveItem()"></i>
+        <i class="el-icon-download" @click="downMoveItem()"></i>
+        <i class="el-icon-plus" @click="upAddItem()"></i>
+        <i class="el-icon-plus" @click="downAddItem()"></i>
       </span>
       <!-- <span slot="footer"
             class="dialog-footer">
@@ -113,31 +106,31 @@
   </div>
 </template>
 <script>
-import tool from "@/assets/js/tool";
+import tool from '@/assets/js/tool';
 export default {
-  name: "Calculatioins",
+  name: 'Calculatioins',
   data() {
     return {
       itemIndex: null,
       toolDialogVisible: false,
       initArgs: {},
-      productId: "",
-      productName: "",
-      result: "",
+      productId: '',
+      productName: '',
+      result: '',
       formData: {
-        productId: "",
-        productName: "",
+        productId: '',
+        productName: '',
         productPriceArrs: [{ buyPrice: 0, buyType: 1, buyNum: 0 }],
         isPublic: false
       },
       products: [
         {
-          value: "p2001",
-          label: "棕榈油"
+          value: 'p2001',
+          label: '棕榈油'
         },
         {
-          value: "fu2001",
-          label: "燃油"
+          value: 'fu2001',
+          label: '燃油'
         }
       ]
     };
@@ -159,7 +152,6 @@ export default {
         buyType: 1,
         buyNum: 0
       };
-      debugger;
       if (index) {
         this.formData.productPriceArrs.splice(index, 0, def);
       } else {
@@ -192,10 +184,10 @@ export default {
         : this.$url.addProduct;
       // url = this.$url.updateById;
       this.$axios.post(url, this.formData).then(msg => {
-        this.$alert(msg.data.msg, "消息", {
-          confirmButtonText: "确定",
+        this.$alert(msg.data.msg, '消息', {
+          confirmButtonText: '确定',
           callback: action => {
-            this.$router.push("/fcIndex");
+            this.$router.push('/fcIndex');
           }
         });
       });
@@ -212,7 +204,7 @@ export default {
     },
     getBaseData() {
       this.$axios
-        .get(this.$url.findListByObj + "?_id=" + this.initArgs.id)
+        .get(this.$url.findListByObj + '?_id=' + this.initArgs.id)
         .then(msg => {
           // const datas = msg.data;
           // this.productId = datas.productId;

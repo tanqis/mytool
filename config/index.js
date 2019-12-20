@@ -1,24 +1,20 @@
 'use strict'
-// Template version: 1.3.1
-// see http://vuejs-templates.github.io/webpack for documentation.
-
 const path = require('path')
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/apiss/*': {
-        target: 'https://suggest.taobao.com/',
-        secure: true, //https
-        changeOrigin: true,
-        pathRewrite: {
-          '^/apiss': ''
-        }
-      },
+      // '/apiss/*': {
+      //   target: 'https://suggest.taobao.com/',
+      //   secure: true, //https
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     '^/apiss': ''
+      //   }
+      // },
       '/toolsCore/API/*': {
         target: 'http://localhost:8087/',
         // secure: true, //https

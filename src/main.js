@@ -6,10 +6,7 @@ import "@/assets/css/main.css"
 import App from './App'
 import router from './router'
 
-// @import "animate.css";
-/* @import "font-awesome"; */
-// @import "element-ui/lib/theme-chalk/index.css";
-// @import "./assets/css/main";
+// @import "font-awesome";
 
 import axios from './assets/js/axiosConfig.js'
 import url from './assets/js/urlConfig'
@@ -23,7 +20,6 @@ Vue.use(ElementUI)
 Vue.config.productionTip = false
 
 //引入mock
-
 
 /* eslint-disable no-new */
 new Vue({

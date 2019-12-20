@@ -1,5 +1,6 @@
 *-lock.json
 *.txt
+*.lock
 .DS_Store
 node_modules/
 /dist/

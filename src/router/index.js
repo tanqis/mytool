@@ -4,15 +4,11 @@ import Router from 'vue-router'
 //根目录
 import Index from '@/components/Index'
 
-//test
-import HelloWorld from '@/views/test/HelloWorld'
-import HomeToDos from '@/views/test/HomeToDos'
-
 //home
 import Main from "@/views/home/Main.vue";
 
 //finance
-import FinanceMap from '@/views/finance/FinanceMap'
+// import FinanceMap from '@/views/finance/FinanceMap'
 
 //lineAccounts
 import Accounts from '@/views/lineAccounts/Index'
@@ -61,20 +57,15 @@ export default new Router({
         name: 'FontHelp',
         component: FontHelp
       },
-      {
-        path: '/financeMap',
-        name: 'FinanceMap',
-        component: FinanceMap
-      },
+      // {
+      //   path: '/financeMap',
+      //   name: 'FinanceMap',
+      //   component: FinanceMap
+      // },
       {
         path: '/accounts',
         name: 'Accounts',
         component: Accounts
-      },
-      {
-        path: '/homeToDos',
-        name: 'HomeToDos',
-        component: HomeToDos
       },
       {
         path: '/lifeDays',
@@ -131,10 +122,6 @@ export default new Router({
         component: LogIn
       }
     ]
-  }, {
-    path: '/test',
-    name: 'HelloWorld',
-    component: HelloWorld
   }, {
     path: '/user/forgetPwd',
     name: 'ForgetPwd',

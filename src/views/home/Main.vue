@@ -60,6 +60,7 @@
   </div>
 </template>
 <script>
+import homeDatas from "../../../static/homeConfig";
 export default {
   data() {
     return {
@@ -70,37 +71,16 @@ export default {
     };
   },
   created() {
-    this.getMainContent();
-    this.getCarouselData();
+    this.cardsData = homeDatas.menus;
+    this.carouselData = homeDatas.carousels;
   },
   mounted() {},
   methods: {
-    getMainContent() {
-      this.$axios("./static/mainMenu.json").then(msg => {
-        this.cardsData = msg.data;
-      });
-    },
-    getCarouselData() {
-      this.$axios("./static/carousel.json").then(msg => {
-        this.carouselData = msg.data;
-      });
-    },
     randomColor() {
       let styleArr = [];
-      const colors = [
-        "#62c1fe",
-        "#5ad5b6",
-        "#ff9233",
-        "#d87aec",
-        "#fe6464",
-        "#ff9233",
-        "#62c1fe",
-        "#fe6464",
-        "#5ad5b6"
-      ];
       for (let i = 0; i < 10; i++) {
         const random = Math.random() * 10;
-        styleArr.push("color:" + colors[parseInt(random)] + ";");
+        styleArr.push("color:" + homeDatas.colors[parseInt(random)] + ";");
       }
       return styleArr;
     }
